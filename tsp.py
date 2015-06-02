@@ -42,11 +42,13 @@ def reset():
     
 reset()
 
+print len(cities)
+print len(unvisited_cities)
 for i in range(0, len(cities)):
    reset()
    current_city = cities[i]
    del unvisited_cities[i]
-
+   current_path.append(str(i))
    while(len(unvisited_cities) > 0):
        closest_distance = float('inf')
        closest_city = -1
@@ -63,5 +65,6 @@ for i in range(0, len(cities)):
        shortest_length = current_length
        shortest_path = current_path
 
-print shortest_path
-print shortest_length
+print len(shortest_path)
+#print shortest_path
+#print shortest_length
