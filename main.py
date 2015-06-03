@@ -29,29 +29,29 @@ def main(input_file):
 		coords[yCoord] = int(temp[2])
 		cities.append(temp[0])
 	ifile.close()
-
+	
+	#record time
 	start_time = timeit.default_timer()
 
 	#get the total length and path 
 	len_path = tsp_greedy(cities, coords)
-
 	end_time = timeit.default_timer()
 
-	print "Time for get the tour is: " + str(10 * (end_time - start_time)) + " ms" 
+	print "Time for get the tour is: " + str(end_time - start_time) + " s" 
 	print len_path
+
 
 	#Get the name of output file
 	output_file = input_file + '.tour'
 
 	#open the output file
 	ofile = open(output_file, 'w')
+	for i in range(len(len_path) ):
+		ofile.write(len_path[i] + "\n")
+
 
 	#Output results into output file
-	"""
-	for i in range(len(path)):
-		ofile.write(path[i] + "\n")
-	"""
-	ofile.close();
+	ofile.close()
 
 #Calculate distance from city i to city j
 def get_distance(coords, i, j):
@@ -93,6 +93,7 @@ def tsp_greedy(cities, coords):
 		current_city = cities[i]
 		del unvisited_cities[i]
 
+		current_path.append(str(i))
 		while(len(unvisited_cities) > 0):
 			closest_distance = float('inf')
 			closest_city = -1
@@ -108,6 +109,7 @@ def tsp_greedy(cities, coords):
 		if current_length < shortest_length:
  			shortest_length = current_length
 			shortest_path = current_path
+	shortest_length = int(round(shortest_length))
 	return [str(shortest_length)] + shortest_path
 
 if __name__ == "__main__":
