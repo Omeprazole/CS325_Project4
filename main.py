@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import sys, math, timeit
+import sys, math, timeit, decimal
 
 #usage: python tsp.py input_file
 
@@ -22,7 +22,7 @@ def main(input_file):
 	
 	#Extract data from file
 	for city in cities_raw:
-		temp = city.split(' ')
+		temp = city.split()
 		xCoord = str(temp[0]) + 'x'
 		yCoord = str(temp[0]) + 'y'
 		coords[xCoord] = int(temp[1])
@@ -109,6 +109,13 @@ def tsp_greedy(cities, coords):
 		if current_length < shortest_length:
  			shortest_length = current_length
 			shortest_path = current_path
+
+	#Add the distance from last city to the first city to shortest length
+	start = shortest_path[0]
+	end = shortest_path[len(shortest_path) - 1]
+	shortest_length = shortest_length + distances[str(start)+'-'+str(end)]
+
+	#Convert float to integer
 	shortest_length = int(round(shortest_length))
 	return [str(shortest_length)] + shortest_path
 
