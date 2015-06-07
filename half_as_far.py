@@ -1,6 +1,6 @@
 import math
 
-f = open('tsp_example_1.txt')
+f = open('tsp_example_3.txt')
 
 cities_raw = f.read().splitlines()
 cities = list()
@@ -8,7 +8,7 @@ coords = dict()
 distances = dict()
 
 for city in cities_raw:
-    temp = city.split(' ')
+    temp = city.split()
     xCoord = str(temp[0]) + 'x'
     yCoord = str(temp[0]) + 'y'
     coords[xCoord] = int(temp[1])
@@ -31,7 +31,7 @@ current_city = -1
 closest_city = -1
 shortest_path = list()
 shortest_length = float('inf')
-
+connected_cities = list()
 def reset():
     global unvisited_cities, current_path, current_length, shortest_length
     for i in range(0, len(cities)):
@@ -50,21 +50,31 @@ for i in range(0, len(cities)):
    del unvisited_cities[i]
    current_path.append(str(i))
    while(len(unvisited_cities) > 0):
-       closest_distance = float('inf')
-       closest_city = -1
+       half_as_close_distance = float('inf')
+       half_as_close_city = -1
+       connected_cities = list()
+       distance = 0
+       for each in unvisited_cities:
+           distance += distances[str(each)+ '-' + str(current_city)]
+       average = distance/len(unvisited_cities)
        for each in unvisited_cities:
            distance = distances[str(each)+ '-' + str(current_city)]
-           if distance > 0 and distance < closest_distance:
-               closest_distance = distance
-               closest_city = each
-       current_city = closest_city
-       current_path.append(str(closest_city))
-       del unvisited_cities[closest_city]
-       current_length = current_length + closest_distance
+           difference = abs(distance - average)
+           if distance > 0 and difference < half_as_close_distance:
+               half_as_close_distance = round(difference)
+               half_as_close_city = each
+       current_city = half_as_close_city
+       current_path.append(str(half_as_close_city))
+       del unvisited_cities[half_as_close_city]
+       current_length = current_length + half_as_close_distance
    if current_length < shortest_length:
        shortest_length = current_length
        shortest_path = current_path
 
+start = shortest_path[0]
+end = shortest_path[len(shortest_path) - 1]
+shortest_length = shortest_length + distances[str(start)+'-'+str(end)]
+
 print len(shortest_path)
 #print shortest_path
-#print shortest_length
+print shortest_length
