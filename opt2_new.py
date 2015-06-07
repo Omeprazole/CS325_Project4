@@ -42,6 +42,9 @@ def print_path(path):
     for i in range(0,len(path)):
         print_city(path[i])
 
+def city_to_string(city):
+    return str(city.num)+" "+str(city.x)+" "+str(city.y)
+
 def optimize(cities):
     for i in range(0, len(cities)-1):
         for j in range(i+2, len(cities)-1):
@@ -53,7 +56,6 @@ def optimize(cities):
                 temp_cities = list(cities)
                 temp_cities[i+1] = c
                 temp_cities[j] = b
-#                print path_dist(cities), path_dist(temp_cities)
                 if path_dist(cities) > path_dist(temp_cities):
                     cities = list(temp_cities)
     return cities
@@ -81,32 +83,19 @@ while(len(unreached) > 0):
     unreached.remove(closest_city)
 
 
-path = reached
+path = list(reached)
 #print path_dist(path)
 #print len(path)
 #print_path(path)
-one_pass = optimize(path)
+one_pass = list(optimize(path))
 print path_dist(one_pass)
 print len(one_pass)
 
 
 
-# output_file = input_file + '.tour'
-# ofile = open(output_file,'w')
-# ofile.write(str(path_dist(reached))+"\n")
-# for i in range(0, len(reached)):
-#     ofile.write(str(reached[i]['no']) + ' ')
-#     ofile.write(str(reached[i]['x']) + ' ')
-#     ofile.write(str(reached[i]['y']) + '\n')
-# ofile.close()
-# 
-
-#found on stack overflow
-def ccw(A,B,C):
-    return (C.y-A.y) * (B.x-A.x) > (B.y-A.y) * (C.x-A.x)
-
-# Return true if line segments AB and CD intersect
-def intersect(A,B,C,D):
-    return ccw(A,C,D) != ccw(B,C,D) and ccw(A,B,C) != ccw(A,B,D)
-
-
+output_file = input_file + '.tour'
+ofile = open(output_file,'w')
+ofile.write(str(path_dist(one_pass))+"\n")
+for i in range(0, len(one_pass)):
+    ofile.write(city_to_string(one_pass[i])+"\n")
+ofile.close()
